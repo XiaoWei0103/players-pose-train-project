@@ -1,0 +1,33 @@
+# pose_dataset.yaml
+
+# 這個要配合你在 train_pose.py 裡 SETTINGS.update({"datasets_dir": DATASET_ROOT}) 的設計
+# 如果 DATASET_ROOT = <專案路徑>/datasets
+# 那這裡就是該 root 底下的子資料夾名稱
+path: player_pose
+
+train: images/train
+val: images/val
+
+# 🔥 這兩個是 YOLOv8 pose 必備的
+kpt_shape: [17, 3]   # 17 個 keypoints，每個 (x, y, v)
+flip_idx:             # 左右對稱 keypoint 的 index 對應
+  - 0    # nose
+  - 2    # left_eye  <-> right_eye
+  - 1
+  - 4    # left_ear  <-> right_ear
+  - 3
+  - 6    # left_shoulder <-> right_shoulder
+  - 5
+  - 8    # left_elbow   <-> right_elbow
+  - 7
+  - 10   # left_wrist   <-> right_wrist
+  - 9
+  - 12   # left_hip     <-> right_hip
+  - 11
+  - 14   # left_knee    <-> right_knee
+  - 13
+  - 16   # left_ankle   <-> right_ankle
+  - 15
+
+names:
+  0: player
