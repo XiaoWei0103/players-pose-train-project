@@ -3,27 +3,12 @@
 import argparse
 import os
 from ultralytics import YOLO
-from ultralytics.utils import SETTINGS  # ⬅ 新增
+from ultralytics.utils import SETTINGS
 
 # 設定 Ultralytics 資料集根目錄為「這個專案底下的 datasets 資料夾」
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATASET_ROOT = os.path.join(BASE_DIR, "datasets")
 SETTINGS.update({"datasets_dir": DATASET_ROOT})
-# 這樣之後 YAML 裡的 path 就會是相對於 DATASET_ROOT
-
-
-#python train_pose.py --data pose_dataset.yaml --model yolov8s-pose.pt --epochs 100 --imgsz 640 --batch 16 --name exp1
-# python train_pose.py --data pose_dataset.yaml --model yolov8s-pose.pt --epochs 100 --imgsz 640 --batch 16 --project runs/pose --name player_from_video1 --device 0
-
-# python train_pose.py `
-#   --data pose_dataset.yaml `
-#   --model yolov8s-pose.pt `
-#   --epochs 100 `
-#   --imgsz 640 `
-#   --batch 16 `
-#   --project runs/pose `
-#   --name player_from_video1 `
-#   --device 0
 
 def parse_args():
     parser = argparse.ArgumentParser(description="YOLOv8 Pose Training Tool")
@@ -43,6 +28,16 @@ def parse_args():
                         help="此次實驗名稱（會變成 runs/pose/name）")
     parser.add_argument("--device", type=str, default="",
                         help="使用裝置：''=自動, '0'=GPU0, 'cpu'=用CPU")
+    #Add 20260621
+    parser.add_argument("--degrees", type=float, default=0.0,
+                        help="隨機旋轉角度範圍，例如 15.0 (預設 0.0)")
+    parser.add_argument("--hsv_v", type=float, default=0.0,
+                        help="隨機明度/對比度調整幅度，例如 0.4 (預設 0.0)")
+    parser.add_argument("--fliplr", type=float, default=0.0,
+                        help="隨機左右翻轉機率，例如 0.5 (預設 0.0)")
+    parser.add_argument("--mixup", type=float, default=0.0,
+                        help="微量的圖層混疊增強機率，例如 0.1 (預設 0.0)")
+    #
     return parser.parse_args()
 
 
@@ -58,6 +53,10 @@ def main():
     print(f"project: {args.project}")
     print(f"name   : {args.name}")
     print(f"device : {args.device}")
+    print(f"degrees: {args.degrees}")
+    print(f"hsv_v  : {args.hsv_v}")
+    print(f"fliplr : {args.fliplr}")
+    print(f"mixup  : {args.mixup}")
 
     # 載入預訓練 pose 模型
     model = YOLO(args.model)
@@ -71,6 +70,10 @@ def main():
         project=args.project,
         name=args.name,
         device=args.device if args.device else None,
+        degrees=args.degrees,
+        hsv_v=args.hsv_v,
+        fliplr=args.fliplr,
+        mixup=args.mixup,
     )
 
     print("訓練結束，模型與 log 已存於:", f"{args.project}/{args.name}")

@@ -77,6 +77,10 @@ python train_pose.py --data pose_dataset.yaml --model runs/pose/player_from_vide
 |`--project`|`str`|`runs/pose`|訓練結果與日誌儲存的根目錄|
 |`--name`|`str`|`exp`|此次訓練的實驗名稱，最終結果會存在 `[project]/[name]`|
 |`--device`|`str`|`""`|使用的硬體裝置：`""`(自動判定), `"0"`(GPU 0), `"cpu"`(強迫使用 CPU)|
+|`--degrees`|`float`|`0.0`|隨機旋轉角度範圍。預設關閉。啟用時建議給 `15.0`（允許左右各旋轉 $\pm 15^\circ$）|
+|`--hsv_v`|`float`|`0.0`|隨機明度/對比度調整幅度。預設關閉。啟用時建議給 `0.4`，可用於適應不同光照環境|
+|`--fliplr`|`float`|`0.0`|隨機左右翻轉機率。預設關閉。啟用時建議給 `0.5`（50% 機率翻轉，左右骨架標籤會自動對調）|
+|`--mixup`|`float`|`0.0`|微量圖層混疊增強機率。預設關閉。將兩張圖半透明疊加，啟用時建議給 `0.1` 即可|
 
 # 🎯 訓練結果
 
